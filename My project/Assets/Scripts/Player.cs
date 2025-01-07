@@ -12,23 +12,27 @@ public class Player : MonoBehaviour
     private float xRange = 22.0f;
     private float yRange = 10.0f;
 
+    public GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Aim();
+        if (!gameManager.paused)
+        {
+            Aim();
 
-        Fire();
+            Fire();
 
-        KeepPlayerInbounds();
+            KeepPlayerInbounds();
 
-        PlayerMovement();
-
+            PlayerMovement();
+        }
     }
 
     void Aim()

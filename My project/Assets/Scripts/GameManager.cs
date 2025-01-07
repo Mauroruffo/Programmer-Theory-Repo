@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +28,14 @@ public class GameManager : MonoBehaviour
     private static int BestScore;
     private static string BestPlayer;
 
+    // Pause variables
+    public GameObject pauseScreen;
+    public bool paused;
+
+    // Gameover HUD
+    private bool gameOver;
+    public Button restartButton;
+
     private void Awake()
     {
         LoadGameRank();
@@ -34,6 +44,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameOver = false;
+        restartButton.gameObject.SetActive(false);
         textMeshLives.text = "Lives = " + lives;
         textMeshScore.text = "Score = " + score;
         CurrentPlayerName.text = DataHandler.Instance.PlayerName;
@@ -45,7 +57,11 @@ public class GameManager : MonoBehaviour
     {
         textMeshLives.text = "Lives = " + lives;
         textMeshScore.text = "Score = " + score;
-
+        // Check if game is paused
+        if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
+        {
+            CheckForPaused();
+        }
     }
 
     public void addLives(int value)
@@ -55,6 +71,8 @@ public class GameManager : MonoBehaviour
         if (lives <= 0)
         {
             Debug.Log("Game Over!");
+            gameOver = true;
+            restartButton.gameObject.SetActive(true);
             textMeshGameOver.enabled = true;
             lives = 0;
             destroyAnimals();
@@ -135,5 +153,28 @@ public class GameManager : MonoBehaviour
         public int HighestScore;
         public string TheBestPlayer;
     }
+
+    void CheckForPaused()
+    {
+        if (!paused)
+        {
+            paused = true;
+            pauseScreen.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            paused = false;
+            pauseScreen.SetActive(false);
+            Time.timeScale = 1;
+        }
+
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 
 }
