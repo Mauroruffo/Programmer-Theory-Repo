@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float speed;
     private float xRange = 22.0f;
     private float yRange = 10.0f;
+    private Animator anim;
 
     public GameManager gameManager;
 
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        anim = gameObject.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -56,23 +58,34 @@ public class Player : MonoBehaviour
         // Player movement
         if (Input.GetKey(KeyCode.D))
         {
+            StartRunAnimation();
             transform.Translate(new Vector3(1, 0, 0) * speed * Time.deltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
+            StartRunAnimation();
             transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.W))
         {
+            StartRunAnimation();
             transform.Translate(new Vector3(0, 0, 1) * speed * Time.deltaTime, Space.World);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
+            StartRunAnimation();
             transform.Translate(new Vector3(0, 0, -1) * speed * Time.deltaTime, Space.World);
         }
+
+        // Set Idle Animation
+        if (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        {
+            StopRunAnimation();
+        }
+
     }
 
     void KeepPlayerInbounds()
@@ -97,6 +110,20 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, yRange);
         }
+    }
+
+    void StartRunAnimation()
+    {
+        // Trigger run animation
+        anim.SetBool("Static_b", false);
+        anim.SetFloat("Speed_f", 0.51f);
+    }
+
+    void StopRunAnimation()
+    {
+        // Trigger Idle
+        anim.SetBool("Static_b", true);
+        anim.SetFloat("Speed_f", 0.24f);
     }
 
 }
