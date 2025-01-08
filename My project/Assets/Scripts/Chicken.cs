@@ -10,7 +10,10 @@ public class Chicken : Animal
     // Start is called before the first frame update
     void Start()
     {
-        speed *= 2;
+        // Chicken's speed
+        speed += 2;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        SetDifficulty();
         Spawn();
     }
 

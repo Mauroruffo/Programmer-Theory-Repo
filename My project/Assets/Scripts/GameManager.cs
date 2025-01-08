@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Current in-game values
-    private int score = 0;
+    public int score = 0;
     private int lives = 5;
 
     // HUD
@@ -36,6 +36,10 @@ public class GameManager : MonoBehaviour
     private bool gameOver;
     public Button restartButton;
 
+    // Spawn Manager
+    SpawnManager spawnManager;
+    int checkpointScore = 0;
+
     private void Awake()
     {
         LoadGameRank();
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         gameOver = false;
         restartButton.gameObject.SetActive(false);
         textMeshLives.text = "Lives = " + lives;
@@ -62,6 +67,15 @@ public class GameManager : MonoBehaviour
         {
             CheckForPaused();
         }
+
+        // Increase difficulty
+        if (score % 100 == 0 && checkpointScore != score)
+        {
+            Debug.Log("Increased spawn rate");
+            spawnManager.restartSpawn = true;
+            checkpointScore = score;
+        }
+
     }
 
     public void addLives(int value)

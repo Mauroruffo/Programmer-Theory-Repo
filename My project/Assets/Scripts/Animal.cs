@@ -7,9 +7,12 @@ public class Animal : MonoBehaviour
     // Start is called before the first frame update
     public float speed = 1.0f;
     GameObject playerRB;
+    protected GameManager gameManager;
 
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        SetDifficulty();
         Spawn();
     }
 
@@ -33,6 +36,13 @@ public class Animal : MonoBehaviour
         transform.LookAt(new Vector3(vector3.x, gameObject.transform.position.y, vector3.z));
         // Move animal forward
         transform.Translate(Vector3.forward * Time.deltaTime * speed);
+    }
+
+    public void SetDifficulty()
+    {
+        // Set animal's speed depending on Player's score;
+        int difficulty = gameManager.score / 100;
+        speed += difficulty;
     }
 
 }

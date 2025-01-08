@@ -13,6 +13,7 @@ public class SpawnManager : MonoBehaviour
     private float startDelay = 2.0f;
     private float interval = 3f;
     private float side = 0f;
+    public bool restartSpawn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,12 @@ public class SpawnManager : MonoBehaviour
         {
             CancelInvoke("SpawnRandomAnimal");
         }
+
+        if (restartSpawn)
+        {
+            IncreaseSpawnRate();
+        }
+
     }
 
     void SpawnRandomAnimal()
@@ -54,6 +61,17 @@ public class SpawnManager : MonoBehaviour
             Instantiate(animalPrefabs[animalIndex], spawnPos, animalPrefabs[animalIndex].transform.rotation);
         }
 
+    }
+
+    public void IncreaseSpawnRate()
+    {
+        if (interval > 1)
+        {
+            CancelInvoke("SpawnRandomAnimal");
+            interval -= 0.3f;
+            InvokeRepeating("SpawnRandomAnimal", startDelay, interval);
+        }
+        restartSpawn = false;
     }
 
 

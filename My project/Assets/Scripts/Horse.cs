@@ -7,7 +7,10 @@ public class Horse : Animal
     // Start is called before the first frame update
     void Start()
     {
-        speed = 4;
+        // Horse's speed
+        speed += 3;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        SetDifficulty();
         Spawn();
     }
 
