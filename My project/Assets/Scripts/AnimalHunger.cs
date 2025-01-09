@@ -14,6 +14,8 @@ public class AnimalHunger : MonoBehaviour
     public GameObject particleEat;
     public float eatOffSet = 0;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,7 @@ public class AnimalHunger : MonoBehaviour
 
     public void feedAnimal(int amount)
     {
+        gameManager.HitSound();
         currentFedAmount += amount;
         hungerSlider.fillRect.gameObject.SetActive(true);
         AnimalEat();

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     // Gameover HUD
     private bool gameOver;
     public Button restartButton;
+    public Button menuButton;
 
     // Gameover Particles
     public ParticleSystem particleExplosion;
@@ -42,6 +43,12 @@ public class GameManager : MonoBehaviour
     // Spawn Manager
     SpawnManager spawnManager;
     int checkpointScore = 0;
+
+    // SFX
+    private AudioSource audioSource;
+    public AudioClip hit;
+    public AudioClip gameOverSound;
+    public AudioClip pushedSound;
 
     private void Awake()
     {
@@ -52,8 +59,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        audioSource = GetComponent<AudioSource>();
         gameOver = false;
         restartButton.gameObject.SetActive(false);
+        menuButton.gameObject.SetActive(false);
         textMeshLives.text = "Lives = " + lives;
         textMeshScore.text = "Score = " + score;
         CurrentPlayerName.text = DataHandler.Instance.PlayerName;
@@ -185,11 +194,18 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    public void ReturnToMenu()
+    {
+        // Load Main Menu
+        SceneManager.LoadScene(0);
+    }
+
     void GameOver()
     {
         Debug.Log("Game Over!");
         gameOver = true;
         restartButton.gameObject.SetActive(true);
+        menuButton.gameObject.SetActive(true);
         textMeshGameOver.enabled = true;
         lives = 0;
         destroyAnimals();
@@ -205,5 +221,14 @@ public class GameManager : MonoBehaviour
         Destroy(explosionInstance, 6);
     }
 
+    public void HitSound()
+    {
+        gameObject.GetComponent<AudioSource>().PlayOneShot(hit);
+    }
+
+    public void Pushed()
+    {
+        gameObject.GetComponent<AudioSource>().PlayOneShot(pushedSound);
+    }
 
 }

@@ -14,19 +14,34 @@ public class SpawnManager : MonoBehaviour
     private float interval = 3f;
     private float side = 0f;
     public bool restartSpawn = false;
+    private bool spawnActive = false;
 
     // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("SpawnRandomAnimal", startDelay, interval);
+        spawnActive = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.Find("Player") == null)
+        // Keep  a maximum number of animals
+        GameObject[] list = GameObject.FindGameObjectsWithTag("Animal");
+        Debug.Log("Number of animals: " + list.Length);
+
+        if (GameObject.Find("Player") == null || (list.Length > 10 && spawnActive))
         {
+            Debug.Log("Deactivating spawn manager");
             CancelInvoke("SpawnRandomAnimal");
+            spawnActive = false;
+        }
+
+        if (list.Length <= 10 && !spawnActive)
+        {
+            Debug.Log("Activating spawn manager");
+            InvokeRepeating("SpawnRandomAnimal", startDelay, interval);
+            spawnActive = true;
         }
 
         if (restartSpawn)
