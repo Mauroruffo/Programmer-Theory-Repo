@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     private bool gameOver;
     public Button restartButton;
 
+    // Gameover Particles
+    public ParticleSystem particleExplosion;
+
     // Spawn Manager
     SpawnManager spawnManager;
     int checkpointScore = 0;
@@ -84,17 +87,9 @@ public class GameManager : MonoBehaviour
 
         if (lives <= 0)
         {
-            Debug.Log("Game Over!");
-            gameOver = true;
-            restartButton.gameObject.SetActive(true);
-            textMeshGameOver.enabled = true;
-            lives = 0;
-            destroyAnimals();
-            Destroy(player);
-            CheckBestPlayer();
+            GameOver();
         }
         Debug.Log("Lives = " + lives);
-
     }
 
     public void addScore(int value)
@@ -132,7 +127,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            BestPlayerNamesAndScore.text = $"Best Score - {BestPlayer}: {BestScore}";
+            BestPlayerNamesAndScore.text = $"Best Score \n {BestPlayer}: {BestScore}";
         }
     }
 
@@ -145,7 +140,7 @@ public class GameManager : MonoBehaviour
             BestPlayer = DataHandler.Instance.PlayerName;
             BestScore = currentScore;
 
-            BestPlayerNamesAndScore.text = $"Best Score - {BestPlayer}: {BestScore}";
+            BestPlayerNamesAndScore.text = $"Best Score \n {BestPlayer}: {BestScore}";
 
             SaveGameRank(BestPlayer, BestScore);
         }
@@ -188,6 +183,26 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void GameOver()
+    {
+        Debug.Log("Game Over!");
+        gameOver = true;
+        restartButton.gameObject.SetActive(true);
+        textMeshGameOver.enabled = true;
+        lives = 0;
+        destroyAnimals();
+        GameOverExplosion();
+        Destroy(player);
+        CheckBestPlayer();
+    }
+
+    void GameOverExplosion()
+    {
+        ParticleSystem explosionInstance = Instantiate(particleExplosion, player.transform.position, player.transform.rotation);
+        explosionInstance.Play();
+        Destroy(explosionInstance, 6);
     }
 
 

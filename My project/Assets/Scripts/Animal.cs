@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Animal : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float speed = 1.0f;
     GameObject playerRB;
     protected GameManager gameManager;
 
+    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();

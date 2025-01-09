@@ -24,6 +24,8 @@ public class Food : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * speed, ForceMode.Impulse);
+        // Destroy after two seconds
+        Destroy(gameObject, 2);
     }
 
 }

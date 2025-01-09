@@ -18,7 +18,14 @@ public class PlayerTag : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Stay on Player's position
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1.5f);
+        if (player != null)
+        {
+            // Stay on Player's position
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1.5f);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

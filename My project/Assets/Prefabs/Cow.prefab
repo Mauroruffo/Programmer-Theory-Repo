@@ -144,6 +144,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hungerSlider: {fileID: 751777437038139567}
   amountToBeFed: 5
+  particleExplosion: {fileID: 180128, guid: 6586ff0f14125534cae2f5d8f04b7871, type: 3}
+  particleEat: {fileID: 4356800953600124292, guid: fb82dfb8d1c7044c69afd2486befecb3, type: 3}
+  eatOffSet: 1
 --- !u!114 &5160511254523845715
 MonoBehaviour:
   m_ObjectHideFlags: 0
